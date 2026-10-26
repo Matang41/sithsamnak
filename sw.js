@@ -1,6 +1,6 @@
 /* Service worker: ให้แอปเปิดได้แม้ไม่มีสัญญาณ
    ★ ทุกครั้งที่ออกรุ่นใหม่ ให้เปลี่ยนเลขใน CACHE (เช่น ss-v2) เพื่อให้เครื่องผู้ใช้โหลดไฟล์ใหม่ */
-const CACHE = 'ss-v6';
+const CACHE = 'ss-v7';
 const SHELL = ['./', 'index.html', 'style.css', 'config.js', 'core.js', 'backend.js', 'app.js', 'knowledge.js', 'songs.js', 'lineage.js', 'teachings.js', 'library.js', 'directory.js', 'events.js', 'finance.js', 'vote.js', 'honor.js', 'manual.js', 'about.js', 'clubinfo.js', 'report.js', 'signature.js', 'push.js', 'extras.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png', 'icons/logo-256.png', 'icons/logo-1024.png'];
 const CDN = ['cdnjs.cloudflare.com', 'www.gstatic.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
