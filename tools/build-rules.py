@@ -74,7 +74,7 @@ unit = {
                          'studyNote': {'.write': AND(OWN('$sid'), MC), '.validate': "newData.isString() && newData.val().length <= 2000"},
                          'studied': {'.write': AND(OWN('$sid'), MC)},
                          'studyAt': {'.write': AND(OWN('$sid'), MC), '.validate': "newData.isNumber()"},
-                         'studyBy': {'.write': AND(OWN('$sid'), MC), '.validate': f"newData.child('id').val() == {SID}"},
+                         'studyBy': {'.write': AND(OWN('$sid'), MC), '.validate': OR(TC, f"newData.child('id').val() == {SID}")},
                          'photo': {'.write': AND(OWN('$sid'), MC), '.validate': "newData.isString() && newData.val().length < 40000"},
                          'updatedAt': {'.write': AND(OWN('$sid'), MC)}, 'updatedBy': {'.write': AND(OWN('$sid'), MC)}}},
     'roles': dict(R_MEM), 'duties': dict(R_MEM),
