@@ -1,0 +1,59 @@
+# deploy อัตโนมัติทุกครั้งที่ push ขึ้น main
+#  1) วาง database.rules.json ลง Firebase Realtime Database (ต้องมี secret FIREBASE_SERVICE_ACCOUNT)
+#  2) เผยแพร่หน้าเว็บบน GitHub Pages
+name: deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+env:
+  DB_URL: https://sithsamnak-default-rtdb.asia-southeast1.firebasedatabase.app
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    env:
+      HAS_SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: ตรวจไฟล์ Rules
+        run: python3 -c "import json;json.load(open('database.rules.json'))"
+      - name: ขอสิทธิ์ Google
+        if: env.HAS_SA == 'true'
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/firebase.database,https://www.googleapis.com/auth/userinfo.email
+      - name: วาง Rules
+        if: env.HAS_SA == 'true'
+        run: |
+          code=$(curl -s -o out.txt -w '%{http_code}' -X PUT -H "Authorization: Bearer ${{ steps.auth.outputs.access_token }}" \
+            -H 'Content-Type: application/json' --data-binary @database.rules.json "$DB_URL/.settings/rules.json")
+          cat out.txt; echo; test "$code" = 200
+      - name: ยังไม่มีกุญแจ
+        if: env.HAS_SA != 'true'
+        run: echo "::warning::ยังไม่ได้ตั้ง secret FIREBASE_SERVICE_ACCOUNT — ข้ามการวาง Rules"
+  pages:
+    needs: rules
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.dep.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: เตรียมไฟล์เว็บ
+        run: mkdir _site && rsync -a --exclude '.git*' --exclude '_site' --exclude 'tools' --exclude 'database.rules.json' --exclude 'firebase.json' ./ _site/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: dep
+        uses: actions/deploy-pages@v4

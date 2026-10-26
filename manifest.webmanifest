@@ -1,0 +1,17 @@
+{
+  "name": "ศิษย์สำนัก — เครือข่ายลูกศิษย์ ผศ.ดร.อำนาจ บุญอนนท์",
+  "short_name": "ศิษย์สำนัก",
+  "description": "ศูนย์กลางประสานงานเครือข่ายลูกศิษย์ และคลังวิชาความรู้ของสำนัก",
+  "id": "./?app=sisamnak",
+  "lang": "th",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

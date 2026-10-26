@@ -1,0 +1,5 @@
+# ไฟล์กุญแจ service account — ห้ามขึ้น GitHub
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+.DS_Store
+node_modules/
